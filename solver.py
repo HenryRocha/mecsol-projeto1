@@ -1,66 +1,32 @@
 import numpy as np
 
-# Gauss
-def solver_gauss(Kg, F):
 
-    x = [0]*len(F)
+class Solver():
+    def gauss(self, kgRestrito, forcasRestrito):
+        """
+            Resolve uma equação de matrizes usando o método de Gauss. 
+        """
 
-    passa = True
-    interacoes = 0
+        x = [0] * len(forcasRestrito)
 
-    while passa:
+        passa = True
+        interacoes = 0
 
-        for i in range(0, len(F)):
-            sub = 0
-            for j in range(0, len(F)):
-                if j != i:
-                    sub -= Kg[i][j]*x[j]
-            new_x = (F[i] + sub)/Kg[i][i]
+        while passa:
+            for i in range(0, len(forcasRestrito)):
+                sub = 0
+                for j in range(0, len(forcasRestrito)):
+                    if j != i:
+                        sub -= kgRestrito[i][j] * x[j]
+                new_x = (forcasRestrito[i] + sub) / kgRestrito[i][i]
 
-            if new_x != 0:
-                dif = abs((new_x - x[i])/new_x)
+                if new_x != 0:
+                    if abs((new_x - x[i]) / new_x) < 1e-10:
+                        passa = False
+                        break
 
-                if dif < 1e-10: 
-                    passa = False
-                    break
-                
-                x[i] = new_x
-        interacoes += 1
+                    x[i] = new_x
 
-    return x, interacoes
+            interacoes += 1
 
-# ------------------------------------------------------ #
-
-# Jacobi
-def solver_jacobi(Kg, F):
-
-    x = [0]*len(F)
-
-    passa = True
-    interacoes = 0
-
-    while passa:
-
-        new_x = x.copy()
-
-        for i in range(0, len(F)):
-            sub = 0
-            for j in range(0, len(F)):
-                if j != i:
-                    sub -= Kg[i][j]*x[j]
-            new_value = (F[i] + sub)/Kg[i][i]
-            new_x[i] = new_value
-        
-        dif = 0
-        for i in range(len(new_x)):
-            if new_x[i] != 0:
-                dif += abs((new_x[i] - x[i])/new_x[i])
-
-        if dif < 1e-10: 
-            passa = False
-            break
-
-        x = new_x.copy()
-        interacoes += 1
-
-    return x, interacoes
+        return x, interacoes
