@@ -40,6 +40,39 @@ for i in vetor_restricoes:
     deslocamento_full.insert(int(i), 0)
 
 reacoes_apoio = np.array(ke).dot(np.array(deslocamento_full))
+deformacoes = []
+tensoes_internas = []
+forcas_internas = []
+
+for conexoes in matriz_conexoes:
+    no_1 = int(conexoes[0]) - 1
+    grau_0 = no_1*2
+    grau_1 = no_1*2 + 1
+    no_2 = int(conexoes[1]) - 1
+    grau_2 = no_2*2
+    grau_3 = no_2*2 + 1
+    x_inicio = matriz_nos[0][no_1]
+    y_inicio = matriz_nos[1][no_1]
+    
+    x_fim = matriz_nos[0][no_2]
+    y_fim = matriz_nos[1][no_2]
+    L = ((x_fim - x_inicio)**2 + (y_fim - y_inicio)**2)**0.5
+    E = conexoes[2]
+    A = conexoes[3]
+
+    sen = (y_fim - y_inicio) / L
+    cos = (x_fim - x_inicio) / L
+    m = [-cos, -sen, cos, sen]
+    graus = [grau_0, grau_1, grau_2, grau_3]
+    vetor_desloc_local = [deslocamento_full[grau] for grau in graus]
+    vetor_desloc_local = np.array(vetor_desloc_local)
+    desloc = np.matmul(m, vetor_desloc_local)/L
+    tensao = E*desloc
+    forca = tensao*A
+    deformacoes.append(desloc)
+    tensoes_internas.append(tensao)
+    forcas_internas.append(forca)
+
 
 delete_indexes = []
 for i in range(len(reacoes_apoio)):
