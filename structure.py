@@ -125,6 +125,11 @@ class Structure():
 
         # Calculando o deslocamento a partir do KgRestrito e ForcasRestrito.
         resultado, _ = solver.gauss(self.kgRestrito, self.forcasRestrito)
+        
+        # Caso queira usar o Numpy para resolver a equação, descomentas o
+        # código abaixo.
+        # resultado = np.linalg.solve(self.kgRestrito, self.forcasRestrito)
+        # resultado = list(resultado)
 
         # Expandindo o resultado, ou seja, retirando as restrições.
         # Para fazer isso basta inserir na lista os índices que foram retirados
