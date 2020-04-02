@@ -1,5 +1,5 @@
 class Node():
-    def __init__(self, x, y, gdlX, gdlY):
+    def __init__(self, x, y, gdlX, gdlY, index):
         """
             Essa função é executada na criação do objeto Nó.
             Serve para guardar todas as informações de um nó.
@@ -14,6 +14,7 @@ class Node():
         self.y = y
         self.gdlX = gdlX
         self.gdlY = gdlY
+        self.index = index
 
     def __str__(self):
         """

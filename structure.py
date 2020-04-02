@@ -45,7 +45,8 @@ class Structure():
             node1 = Node(self.matriz_nos[0][indexNo1],
                          self.matriz_nos[1][indexNo1],
                          (indexNo1) * 2,
-                         (indexNo1) * 2 + 1)
+                         (indexNo1) * 2 + 1,
+                         indexNo1)
 
             # Index do nó 2 do elemento.
             indexNo2 = int(self.matriz_conexoes[i][1]) - 1
@@ -56,7 +57,8 @@ class Structure():
             node2 = Node(self.matriz_nos[0][indexNo2],
                          self.matriz_nos[1][indexNo2],
                          (indexNo2) * 2,
-                         (indexNo2) * 2 + 1)
+                         (indexNo2) * 2 + 1,
+                         indexNo2)
 
             # Pegando as variáveis E a A.
             E = self.matriz_conexoes[i][2]
@@ -125,7 +127,7 @@ class Structure():
 
         # Calculando o deslocamento a partir do KgRestrito e ForcasRestrito.
         resultado, _ = solver.gauss(self.kgRestrito, self.forcasRestrito)
-        
+
         # Caso queira usar o Numpy para resolver a equação, descomentas o
         # código abaixo.
         # resultado = np.linalg.solve(self.kgRestrito, self.forcasRestrito)
@@ -201,7 +203,75 @@ class Structure():
         """
 
         geraSaida(self.outputFilename, self.reacoesDeApoio,
-                   self.deslocamento, self.deformacao, self.forcas, self.tensoes)
+                  self.deslocamento, self.deformacao, self.forcas, self.tensoes)
+
+    def plota(self):
+        """
+            Cria um plot com todos os nós e elementos enumerados
+            e salva em um arquivo .png com o mesmo nome do arquivo
+            de saída.
+        """
+
+        # Importando módulos e criando a figura do plot.
+        import matplotlib as mpl
+        import matplotlib.pyplot as plt
+        fig = plt.figure()
+
+        # Lista de nós que já foram desenhados.
+        drawnNodes = []
+
+        # Plotando os elementos.
+        for element in self.elementos:
+            # Desenha uma linha entre os nós do elemento.
+            xList = [element.node1.x, element.node2.x]
+            yList = [element.node1.y, element.node2.y]
+            plt.plot(xList, yList, color="g", linewidth="2", zorder=0)
+
+            # Calculando o ponto no centro do elemento, para
+            # colocar o número indicando qual elemento é.
+            middleX = (element.node1.x + element.node2.x) / 2
+            middleY = (element.node1.y + element.node2.y) / 2
+            plt.text(middleX, middleY, str(element.index),
+                     color="b", fontsize=12, zorder=5)
+
+            # Verificando se o ponto 1 desse elemento já foi
+            # desenhado. Se não foi, desenhe-o e adicione-o
+            # a lista de pontos desenhados. Caso contrário,
+            # não faça nada.
+            if element.node1.index not in drawnNodes:
+                plt.plot(element.node1.x, element.node1.y,
+                         "ro", markersize=6, zorder=10)
+                plt.text(element.node1.x + 0.05, element.node1.y + 0.05,
+                         str(element.node1.index), color="r", fontsize=12, zorder=10)
+                drawnNodes.append(element.node1.index)
+
+            # Verificando se o ponto 2 desse elemento já foi
+            # desenhado. Se não foi, desenhe-o e adicione-o
+            # a lista de pontos desenhados. Caso contrário,
+            # não faça nada.
+            if element.node2.index not in drawnNodes:
+                plt.plot(element.node2.x, element.node2.y,
+                         "ro", markersize=6, zorder=10)
+                plt.text(element.node2.x + 0.05, element.node2.y + 0.05,
+                         str(element.node2.index), color="r", fontsize=12, zorder=10)
+                drawnNodes.append(element.node2.index)
+
+        # Adicionando informações ao plot.
+        plt.axis("equal")
+        plt.grid(True)
+        plt.xlabel("x [m]")
+        plt.ylabel("y [m]")
+        plt.title(
+            f"Estrutura antes do cálculos\nArquivo de entrada: {self.filename}")
+
+        filename = self.outputFilename.split(".")[0]
+
+        # Salvando o plot em uma imagem.
+        plt.savefig(filename)
+
+        # Para debugging.
+        self.log(
+            f"\nRepresentação visual da estrutura gerada em {filename}.png")
 
     def log(self, output):
         """
