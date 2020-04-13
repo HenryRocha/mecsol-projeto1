@@ -241,7 +241,7 @@ class Structure():
             if element.node1.index not in drawnNodes:
                 plt.plot(element.node1.x, element.node1.y,
                          "ro", markersize=6, zorder=10)
-                plt.text(element.node1.x + 0.05, element.node1.y + 0.05,
+                plt.text(element.node1.x, element.node1.y,
                          str(element.node1.index), color="r", fontsize=12, zorder=10)
                 drawnNodes.append(element.node1.index)
 
@@ -252,7 +252,7 @@ class Structure():
             if element.node2.index not in drawnNodes:
                 plt.plot(element.node2.x, element.node2.y,
                          "ro", markersize=6, zorder=10)
-                plt.text(element.node2.x + 0.05, element.node2.y + 0.05,
+                plt.text(element.node2.x, element.node2.y,
                          str(element.node2.index), color="r", fontsize=12, zorder=10)
                 drawnNodes.append(element.node2.index)
 
