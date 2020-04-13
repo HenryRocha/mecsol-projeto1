@@ -26,5 +26,8 @@ if __name__ == "__main__":
     # Gerando o arquivo de saída.
     structure.gerarSaida()
 
+    # Calcula o peso da estrutura.
+    structure.calculaPeso()
+
     # Plota os pontos.
     structure.plota()

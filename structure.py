@@ -273,6 +273,20 @@ class Structure():
         self.log(
             f"\nRepresentação visual da estrutura gerada em {filename}.png")
 
+    def calculaPeso(self):
+        """
+            Calcula o peso da ponte.
+        """
+
+        self.volume = 0
+        for element in self.elementos:
+            self.volume += element.L * element.A
+
+        self.weight = 848 * self.volume * 1000
+
+        # Para debugging.
+        self.log(f"\nPeso da ponte: {self.weight}")
+
     def log(self, output):
         """
             Função usada para facilitar o debug do código.
