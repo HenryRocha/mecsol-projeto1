@@ -7,12 +7,15 @@ from node import Node
 
 
 class Structure():
-    def __init__(self, filename, outputFilename="grupo14.txt", debug=False):
+    def __init__(self, filename, outputFilename="grupo14.txt", solvingMethod="gauss", debug=False):
         # Salvando o nome do arquivo.
         self.filename = filename
 
         # Salvando o nome do arquivo de saída.
         self.outputFilename = outputFilename
+
+        # Método de solução de equações.
+        self.solvingMethod = solvingMethod
 
         # Se o modo debug está ativado ou não.
         self.debug = debug
@@ -122,16 +125,24 @@ class Structure():
             que foi implementado em aula.
         """
 
-        # Criando o objeto solver.
-        solver = Solver()
+        if (self.solvingMethod == "gauss"):
+            # Criando o objeto solver.
+            solver = Solver()
 
-        # Calculando o deslocamento a partir do KgRestrito e ForcasRestrito.
-        resultado, _ = solver.gauss(self.kgRestrito, self.forcasRestrito)
+            # Calculando o deslocamento a partir do KgRestrito e ForcasRestrito.
+            resultado, _ = solver.gauss(self.kgRestrito, self.forcasRestrito)
 
-        # Caso queira usar o Numpy para resolver a equação, descomentas o
-        # código abaixo.
-        # resultado = np.linalg.solve(self.kgRestrito, self.forcasRestrito)
-        # resultado = list(resultado)
+        elif (self.solvingMethod == "jacobi"):
+            # Criando o objeto solver.
+            solver = Solver()
+
+            # Calculando o deslocamento a partir do KgRestrito e ForcasRestrito.
+            resultado, _ = solver.gauss(self.kgRestrito, self.forcasRestrito)
+
+        elif (self.solvingMethod == "numpy"):
+            # Resolvendo as equações usando a biblioteca Numpy.
+            resultado = np.linalg.solve(self.kgRestrito, self.forcasRestrito)
+            resultado = list(resultado)
 
         # Expandindo o resultado, ou seja, retirando as restrições.
         # Para fazer isso basta inserir na lista os índices que foram retirados

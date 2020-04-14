@@ -1,10 +1,18 @@
 from structure import Structure
+import argparse
 
 if __name__ == "__main__":
-    # structure = Structure("entrada-aulas-5-6.xlsx", outputFilename="saida-aulas-5-6-grupo14.txt", debug=True)
-    # structure = Structure("entrada-atividade-aula-10.xlsx", outputFilename="saida-atividade-aula-10.txt", debug=True)
-    # structure = Structure("entrada-entrega.xlsx", outputFilename="saida-entrega-grupo14.txt", debug=True)
-    structure = Structure("entrada-ponte.xlsx", outputFilename="saida-ponte.txt", debug=False)
+    # Configurando o Argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--debug", help="run the software in debug mode", action="store_true")
+    requiredArgs = parser.add_argument_group("required arguments")
+    requiredArgs.add_argument("-s", "--solver", help="solving method", type=str, choices=["gauss", "jacobi", "numpy"], required=True)
+    requiredArgs.add_argument("-i", "--input", help="name of the input file", required=True)
+    requiredArgs.add_argument("-o", "--output", help="name of the output file", required=True)
+    args = parser.parse_args()
+
+    # Criando o objeto.
+    structure = Structure(args.input, outputFilename=args.output, solvingMethod=args.solver, debug=args.debug)
 
     # Criando a lista de elementos.
     structure.criarListaDeElementos()
