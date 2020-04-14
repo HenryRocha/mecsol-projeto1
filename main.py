@@ -30,5 +30,8 @@ if __name__ == "__main__":
     # Calcula o peso da estrutura.
     structure.calculaPeso()
 
+    # Verifica se a estrutura está dentro das limitações.
+    structure.checaLimitacoes()
+
     # Plota os pontos.
     structure.plota()
