@@ -137,7 +137,7 @@ class Structure():
             solver = Solver()
 
             # Calculando o deslocamento a partir do KgRestrito e ForcasRestrito.
-            resultado, _ = solver.gauss(self.kgRestrito, self.forcasRestrito)
+            resultado, _ = solver.jacobi(self.kgRestrito, self.forcasRestrito)
 
         elif (self.solvingMethod == "numpy"):
             # Resolvendo as equações usando a biblioteca Numpy.
