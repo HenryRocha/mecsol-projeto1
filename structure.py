@@ -269,12 +269,12 @@ class Structure():
         plt.savefig(filename)
 
         # Para debugging.
-        self.log(
-            f"\nRepresentação visual da estrutura gerada em {filename}.png")
+        print(
+            f"Representação visual da estrutura gerada em {filename}.png")
 
     def calculaPeso(self):
         """
-            Calcula o peso da ponte.
+            Calcula o peso da estrutura.
         """
 
         self.volume = 0
@@ -284,7 +284,32 @@ class Structure():
         self.weight = 848 * self.volume * 1000
 
         # Para debugging.
-        self.log(f"\nPeso da ponte: {self.weight}")
+        print(f"Peso da ponte: {self.weight}")
+
+    def checaLimitacoes(self):
+        """
+            Checa se a estrutura está dentro das limitações.
+        """
+
+        for element in self.elementos:
+            if (element.L > 0.11):
+                print(
+                    f"Elemento {element.index} tem comprimento maior que 110mm")
+
+        for i in range(len(self.tensoes)):
+            if (abs(self.tensoes[i]) > 18E6):
+                print(
+                    f"Tensão no elemento {i} acima do limite: {self.tensoes[i]}")
+
+        for i in range(len(self.deformacao)):
+            if (abs(self.deformacao[i]) > 0.05):
+                print(
+                    f"Deformação no elemento {i} acima do limite: {self.deformacao[i]}")
+
+        for i in range(len(self.deslocamento)):
+            if (abs(self.deslocamento[i]) > 0.02):
+                print(
+                    f"Deslocamento no elemento {i} acima do limite: {self.deslocamento[i]}")
 
     def log(self, output):
         """
