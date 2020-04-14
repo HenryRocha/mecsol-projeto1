@@ -215,7 +215,6 @@ class Structure():
         # Importando módulos e criando a figura do plot.
         import matplotlib as mpl
         import matplotlib.pyplot as plt
-        fig = plt.figure()
 
         # Lista de nós que já foram desenhados.
         drawnNodes = []
